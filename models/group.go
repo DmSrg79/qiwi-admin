@@ -6,7 +6,9 @@
 
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 // Group represent group of wallets
 // gen:qs
@@ -98,7 +100,12 @@ func GetGroupCounters(groupID uint) (res GroupCounters, err error) {
 // GetGroupFreeWallet returns wallet, which the cat receive amount size payment
 func GetGroupFreeWallet(groupID uint, amount uint) (wallet *Wallet, err error) {
 	wallet = new(Wallet)
-	err = NewWalletQuerySet(db).GroupIDEq(groupID).BalanceLt(15000 - float64(amount)).One(wallet)
+	// SELECT * from wallets
+	//LEFT JOIN txns ON wallets.id = txns.wallet_id
+	//ORDER BY
+	sql := `SELECT * from wallets WHERE total_month_incoming + ? < limit AND group_id = ? ORDER BY random() LIMIT 1`
+	err = db.Raw(sql, amount, groupID).Scan(wallet).Error
+	//err = NewWalletQuerySet(db).GroupIDEq(groupID).BalanceLt(15000 - float64(amount)).One(wallet)
 	return
 }
 
