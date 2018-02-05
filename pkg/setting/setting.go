@@ -62,6 +62,6 @@ func NewContext(ops ...func()) (err error) {
 
 func CustomLocation(path string) func() {
 	return func() {
-		confFile = path
+		//confFile = path
 	}
 }
