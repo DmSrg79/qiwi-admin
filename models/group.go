@@ -103,7 +103,11 @@ func GetGroupFreeWallet(groupID uint, amount uint) (wallet *Wallet, err error) {
 	// SELECT * from wallets
 	//LEFT JOIN txns ON wallets.id = txns.wallet_id
 	//ORDER BY
-	sql := `SELECT * from wallets WHERE total_month_incoming + ? < "limit" AND group_id = ? ORDER BY random() LIMIT 1`
+	sql := `SELECT * from wallets
+	 WHERE total_month_incoming + ? < "limit"
+	 AND group_id = ?
+	 AND "deleted_at" IS NULL
+	  ORDER BY random() LIMIT 1`
 	err = db.Raw(sql, amount, groupID).Scan(wallet).Error
 	//err = NewWalletQuerySet(db).GroupIDEq(groupID).BalanceLt(15000 - float64(amount)).One(wallet)
 	return
