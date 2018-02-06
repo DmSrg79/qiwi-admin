@@ -5,6 +5,8 @@
 package models
 
 import (
+	"fmt"
+	"log"
 	"path/filepath"
 
 	"github.com/zhuharev/qiwi-admin/pkg/setting"
@@ -28,7 +30,9 @@ func DB() *gorm.DB {
 
 // NewContext init db instance
 func NewContext() (err error) {
-	db, err = gorm.Open("sqlite3", filepath.Join(setting.App.DataDir, dbName))
+	dbPath := filepath.Join(setting.App.DataDir, dbName)
+	log.Println("database path", dbPath)
+	db, err = gorm.Open("sqlite3", dbPath)
 	if err != nil {
 		return
 	}
@@ -41,7 +45,7 @@ func NewContext() (err error) {
 		&App{},
 		&Autotransfer{}).Error
 	if err != nil {
-		return
+		return fmt.Errorf("automigrate err: %s", err)
 	}
 
 	err = NewStormContext()

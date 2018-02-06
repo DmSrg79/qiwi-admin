@@ -5,6 +5,8 @@
 package routers
 
 import (
+	"fmt"
+
 	"github.com/urfave/cli"
 	"github.com/zhuharev/qiwi-admin/models"
 	"github.com/zhuharev/qiwi-admin/pkg/context"
@@ -40,7 +42,7 @@ func GlobalInit(ctx *cli.Context) (err error) {
 
 	err = models.NewContext()
 	if err != nil {
-		return
+		return fmt.Errorf("models context err: %v", err)
 	}
 	err = syncronizer.NewContext()
 	if err != nil {

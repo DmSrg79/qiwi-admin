@@ -5,6 +5,7 @@
 package models
 
 import (
+	"fmt"
 	"path/filepath"
 
 	"github.com/zhuharev/qiwi-admin/pkg/setting"
@@ -19,7 +20,7 @@ var (
 func NewStormContext() (err error) {
 	stormDB, err = storm.Open(filepath.Join(setting.App.DataDir, "storm.bolt"))
 	if err != nil {
-		return
+		return fmt.Errorf("open storm.bolt file err: %s", err)
 	}
 	return
 }
