@@ -1,2 +1,4 @@
 reg:
   disabled: true
+
+data_dir: "/var/lib/dokku/data/storage/qiwia"

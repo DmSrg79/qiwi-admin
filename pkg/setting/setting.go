@@ -6,6 +6,7 @@ package setting
 
 import (
 	"io/ioutil"
+	"log"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -49,6 +50,8 @@ func NewContext(ops ...func()) (err error) {
 	if err != nil {
 		return
 	}
+
+	log.Println("data dir", App.DataDir)
 
 	// iniFile, err = ini.Load(confFile)
 	// if err != nil {
